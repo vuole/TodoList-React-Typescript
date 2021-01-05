@@ -1,38 +1,192 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+body{
+  background-color: #f0f2f5;
+ }
+ 
+ .todo-page{
+   width: 800px;
+   height: 100%;
+   margin: 50px auto;
+   background-color: white;
+ }
+ ul{
+   margin: 0px;
+   padding: 0px;
+ }
+ ul li{
+   font-size: 18px;
+   font-weight: 500;
+   list-style: none;
+   border: 1px solid #ccc;
+   border-top: 0px;
+   /* text-align: center; */
+   height: 50px;
+   width: 100%;
+   line-height: 50px;
+   cursor: pointer;
+ }
+ li:hover{
+   background-color: #dae9f7;
+ }
+ li:hover .fa-trash-alt{
+   display: inline;
+ }
+ .alert-deadline{
+  width: 46px;
+  height: 36px;
+  margin-top: 3px;
+ }
+ .footer{
+   display: flex;
+   border: 1px solid #ccc;
+   border-top: 0px;
+   height: 50px;
+   width: 100%;
+   line-height: 50px;
+   font-size: 16px;
+   color:  rgb(128, 119, 119);;
+ }
+ .footer .count-item{
+   margin-left: 20px;
+ }
+ .filter{
+   display: flex;
+   margin-left: 100px;
+ }
+ .filter div{
+   height: 100%;
+   width: 100px;
+   text-align: center;
+   cursor: pointer;
+ }
+ .filter div:hover{
+   background-color: #7e9eb9;
+   color: white;
+ }
+ .filter .selected{
+   background-color: #337AB7;
+   color: white;
+ }
+ .header-todolist{
+   border: 1px solid #ccc;
+   height: 60px;
+   width: 100%;
+   line-height: 50px;
+   display: flex;
+   position: relative;
+   font-size: 18px;
+   font-weight: bold;
+   /* color: rgb(128, 119, 119); */
+ }
+ .header-todolist a{
+   width: 80%;
+   cursor: pointer;
+   color: rgb(128, 119, 119);
+ }
+ a:hover, a:focus{
+   text-decoration: none;
+ }
+ .header-todolist .fa-angle-down{
+   margin-left: 20px;
+   margin-right: 15px;
+ }
+ .header-todolist button{
+   position: absolute;
+   right: 37px;
+   top: 10px;
+ }
+ .header-todolist .fa-plus{
+   color: white;
+   font-size: 18px;
+ }
+ .form-group small{
+   color: red;
+ }
+ i{
+   font-size: 24px;
+   color: #ccc;
+ }
+ .delete{
+   display: flex;
+ }
+ .fa-trash-alt{
+   color: red;
+   margin: 13px 13px;
+   cursor: pointer;
+   font-size: 22px;
+   display: none;
+ }
+ .row{
+   margin: 0;
+ }
+ li span{
+   margin-left: -75px;
+ }
+ li .completed{
+   color: #ccc;
+   text-decoration: line-through;
+ }
+ 
+ /* Css Checkbox */
+ .round {
+   position: relative;
+   margin-top: 10px;
+ }
+ 
+ .round label {
+   background-color: #fff;
+   border: 1px solid #ccc;
+   border-radius: 50%;
+   cursor: pointer;
+   height: 28px;
+   left: 0;
+   position: absolute;
+   top: 0;
+   width: 28px;
+ }
+ 
+ .round label:after {
+   border: 2px solid #fff;
+   border-top: none;
+   border-right: none;
+   content: "";
+   height: 6px;
+   left: 7px;
+   opacity: 0;
+   position: absolute;
+   top: 8px;
+   transform: rotate(-45deg);
+   width: 12px;
+ }
+ 
+ .round input[type="checkbox"] {
+   visibility: hidden;
+ }
+ 
+ .round input[type="checkbox"]:checked + label {
+   background-color: #337AB7;
+   border-color: #337AB7;
+ }
+ 
+ .round input[type="checkbox"]:checked + label:after {
+   opacity: 1;
+ }
+ 
+ 
+ /* .search {
+   width: 130px;
+   box-sizing: border-box;
+   border: 2px solid #ccc;
+   border-radius: 4px;
+   font-size: 16px;
+   background-color: white;
+   background-image: url('https://www.w3schools.com/howto/searchicon.png');
+   background-position: 10px 10px; 
+   background-repeat: no-repeat;
+   padding: 12px 20px 12px 40px;
+   -webkit-transition: width 0.4s ease-in-out;
+   transition: width 0.4s ease-in-out;
+ }
+ 
+ .search:focus {
+   width: 100%;
+ } */

@@ -3,15 +3,19 @@ import React, { useState, useEffect } from 'react';
 // import { Button, Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { PropsModalAddTodo } from '../model/type/todo';
-import { Todo } from '../model/type/todo';
+import { PropsModalAddTodo, Todo, TypeTodo } from '../model/type/todo';
+import { postTodo, getListTypeTodo } from '../service/todo-service'
 
 function ModalAddTodo(props: PropsModalAddTodo) {
     const [show, setShow] = useState(false);
     const [fields, setFields] = useState<any>({});
     const [errors, setErrors] = useState<any>({});
-    const [listTypeTodo, setListType] = useState([]);
+    const [listTypeTodo, setListType] = useState<TypeTodo[]>([]);
     const rows: JSX.Element[] = [];
+
+    useEffect(() => {
+        getListTypeTodo().then(res => setListType(res.data))
+    }, []);
 
     const handleClose = () => setShow(false);
 
@@ -67,37 +71,10 @@ function ModalAddTodo(props: PropsModalAddTodo) {
     };
 
     const saveAddTodo = () => {
-        const todoList = props.todoList;
-        fetch('http://localhost:3001/todoList', {
-            method: 'POST',
-            body: JSON.stringify(fields),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
-            .then((response) => response.json())
-            .then((result) => {
-                todoList.push(result.data);
-                const todoListChange = todoList.slice();
-                props.onDataChange(todoListChange);
-            },
-                (error) => {
-                    console.log("error: ", error);
-                });
+        postTodo(fields).then(res => {
+            props.onChangeRefresh();
+        });
     }
-
-    useEffect(() => {
-        fetch("http://localhost:3001/getlistTypeTodo")
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    setListType(result.data);
-                },
-                (error) => {
-                    console.log("error: ", error);
-                }
-            )
-    }, [])
 
     return (
         <>

@@ -3,35 +3,40 @@ import React from 'react';
 export interface Todo {
     id: number,
     todoName: string,
-    completed: boolean,
+    isCompleted: boolean,
     type: string,
     deadline: string
 }
 
+export interface TodoIsCompleted {
+    isCompleted: boolean
+}
+
+export interface TypeTodo {
+    key: string,
+    value: string
+}
+
 export interface PropsContentTodoList {
     todoListFilter: Todo[],
-    todoList: Todo[],
     filter: string,
-    onDataChange: Function,
-    onChangeFilter: Function
+    onChangeFilter: Function,
+    onChangeRefresh: Function
 }
 
 export interface PropsHeaderTodoList {
-    todoList: Todo[],
-    onDataChange: Function,
-    onChangeKeySearch: Function
+    onChangeKeySearch: Function,
+    onChangeRefresh: Function
 }
 
 export interface PropsModalAddTodo {
-    todoList: Todo[],
-    onDataChange: Function
+    onChangeRefresh: Function
 }
 
 export interface PropsDataTodoListRow {
     todo: Todo,
     key: number,
-    todoList: Todo[],
-    onDataChange: Function
+    onChangeRefresh: Function
 }
 
 export interface PropsFooterTodoList {
@@ -42,7 +47,6 @@ export interface PropsFooterTodoList {
 
 export interface PropsAlertDialog {
     todo: Todo,
-    todoList: Todo[],
-    onDataChange: Function,
-    minutesCompare: number
+    minutesCompare: number,
+    onChangeRefresh: Function
 }

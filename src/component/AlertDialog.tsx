@@ -7,6 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { PropsAlertDialog } from '../model/type/todo';
 import { Todo } from '../model/type/todo';
+import { delTodo } from "../service/todo-service"
 
 export default function AlertDialog(props: PropsAlertDialog) {
     const [open, setOpen] = React.useState(false);
@@ -21,31 +22,17 @@ export default function AlertDialog(props: PropsAlertDialog) {
 
     const deleteTodo = () => {
         const todo: Todo = props.todo;
-        fetch('http://localhost:3001/todoList?id=' + todo.id, {
-            method: 'DELETE',
-        })
-            .then((response) => response.json())
-            .then((result) => {
-                const todoList: Todo[] = props.todoList;
-                const index = todoList.findIndex(e => e.id === todo.id);
-                todoList.splice(index, 1);
-                //copy sang mot array moi khong lien quan gi den array cu (tuc khac dia chi) de khi setState React nhan ra thay doi va render DOM
-                const todoListChange = todoList.slice();
-                props.onDataChange(todoListChange);
-            },
-                (error) => {
-                    console.log("error: ", error);
-                });
+        delTodo(todo.id).then(res => {
+            props.onChangeRefresh();
+        });
     };
 
     return (
         <div>
-            {/* <Button variant="outlined" color="primary" onClick={handleClickOpen}> */}
             <div className="col-2 delete">
-                {props.minutesCompare <= 1 ? <img src="./Alarm_Clock.gif" className="alert-deadline" /> : ""}
+                {props.minutesCompare <= 15 ? <img src="../../Alarm_Clock.gif" className="alert-deadline" /> : ""}
                 <i className='fas fa-trash-alt' onClick={handleClickOpen}></i>
             </div>
-            {/* </Button> */}
             <Dialog
                 open={open}
                 onClose={handleClose}

@@ -8,8 +8,7 @@ import { PropsContentTodoList } from '../model/type/todo';
 function ContentTodoList(props: PropsContentTodoList) {
     const rows: JSX.Element[] = [];
     props.todoListFilter.forEach((e: Todo) => {
-        rows.push(<DataTodoListRow todo={e} key={e.id}
-            todoList={props.todoList} onDataChange={props.onDataChange} />)
+        rows.push(<DataTodoListRow todo={e} key={e.id} onChangeRefresh={props.onChangeRefresh} />)
     });
     return (
         <div>

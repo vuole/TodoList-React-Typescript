@@ -42,7 +42,7 @@ function HeaderTodoList(props: PropsHeaderTodoList) {
                     </div>
                 </div>
             </div>
-            <ModalAddTodo todoList={props.todoList} onDataChange={props.onDataChange} />
+            <ModalAddTodo onChangeRefresh={props.onChangeRefresh} />
         </div>
     );
 }

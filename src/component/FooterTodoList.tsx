@@ -12,13 +12,13 @@ function FooterTodoList(props: PropsFooterTodoList) {
 
     const countItemLeft = () => {
         const todoListFilter: Todo[] = props.todoListFilter;
-        let dem = 0;
+        let count = 0;
         todoListFilter.forEach(e => {
-            if (e.completed === false) {
-                dem++;
+            if (e.isCompleted === false) {
+                count++;
             };
         });
-        return dem;
+        return count;
     };
 
     return (

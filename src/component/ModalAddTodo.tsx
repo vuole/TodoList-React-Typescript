@@ -10,6 +10,8 @@ function ModalAddTodo(props: PropsModalAddTodo) {
     const [show, setShow] = useState(false);
     const [fields, setFields] = useState<any>({});
     const [errors, setErrors] = useState<any>({});
+    const [listTypeTodo, setListType] = useState([]);
+    const rows: JSX.Element[] = [];
 
     const handleClose = () => setShow(false);
 
@@ -45,27 +47,21 @@ function ModalAddTodo(props: PropsModalAddTodo) {
             formIsValid = false;
         } else if (Date.parse(fields["deadline"]) < (new Date()).getTime()) {
             let d = new Date();
-            // console.log(d.getTime());
             pushErrors["deadline"] = "Cannot choose a time in the past";
             formIsValid = false;
         };
         pushErrors["formIsValid"] = formIsValid;
         setErrors(pushErrors);
-        // console.log("error", errors)
-        // return formIsValid;
     };
 
     const handleChangeInput = (event: any) => {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        console.log(value)
         const name = target.name;
         fields[name] = value;
 
         setFields(fields);
         handleValidation();
-
-        // console.log(fields);
     };
 
     const saveAddTodo = () => {
@@ -90,6 +86,20 @@ function ModalAddTodo(props: PropsModalAddTodo) {
                 });
     }
 
+    useEffect(() => {
+        fetch("http://localhost:3001/getlistTypeTodo")
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    console.log("result", result.data);
+                    setListType(result.data);
+                },
+                (error) => {
+                    console.log("error: ", error);
+                }
+            )
+    }, [])
+
     return (
         <>
             <Button variant="primary" onClick={handleShow}>
@@ -104,7 +114,7 @@ function ModalAddTodo(props: PropsModalAddTodo) {
                 <Modal.Body>
                     <div className="form-group">
                         <label>Todo Name</label>
-                        <input type="text" className="form-control" name="todoName" defaultValue={fields["todoName"] || ''}
+                        <input type="text" placeholder="Name..." className="form-control" name="todoName" defaultValue={fields["todoName"] || ''}
                             onChange={handleChangeInput} onBlur={handleChangeInput} />
                         <small>{errors["todoName"] || ''}</small>
                     </div>
@@ -112,10 +122,11 @@ function ModalAddTodo(props: PropsModalAddTodo) {
                         <label>Type</label>
                         <select className="form-control" name="type" defaultValue={fields["type"] || ''}
                             onChange={handleChangeInput} onBlur={handleChangeInput}>
-                            <option value="">Open this select menu</option>
-                            <option value="TYPE A">Type A</option>
-                            <option value="TYPE B">Type B</option>
-                            <option value="TYPE C">Type C</option>
+                            <option value="" disabled>Open this select menu</option>
+                            {listTypeTodo.forEach((type: any) => {
+                                rows.push(<option value={type.key} key={type.key}>{type.value}</option>)
+                            })}
+                            {rows}
                         </select>
                         <small>{errors["type"] || ''}</small>
                     </div>
@@ -138,4 +149,5 @@ function ModalAddTodo(props: PropsModalAddTodo) {
         </>
     );
 }
+
 export default ModalAddTodo;

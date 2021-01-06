@@ -6,8 +6,8 @@ var http = require('http');
 var express = require('express');
 // Create Express webapp.
 var app = express();
-
 require('dotenv').load();
+var Enum = require('enum');
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -22,36 +22,26 @@ const users = [
   { identity: "admin", role: "host" }
 ];
 
-const todoList = [
-  { id: 1, todoName: "Task a", completed: false, type: "TYPE A", deadline: "2021-01-04T16:08" },
-  { id: 2, todoName: "Task b", completed: false, type: "TYPE A", deadline: "2021-01-04T16:08" },
-  { id: 3, todoName: "Task c", completed: false, type: "TYPE A", deadline: "2021-03-04T16:08" },
-  { id: 4, todoName: "Task d", completed: true, type: "TYPE B", deadline: "2021-04-04T16:08" },
-  { id: 5, todoName: "Task e", completed: true, type: "TYPE B", deadline: "2021-05-04T16:08" },
-  { id: 6, todoName: "Task f", completed: true, type: "TYPE B", deadline: "2021-06-04T16:08" },
-  { id: 7, todoName: "Task g", completed: true, type: "TYPE C", deadline: "2021-07-04T16:08" },
-  { id: 8, todoName: "Task h", completed: true, type: "TYPE C", deadline: "2021-08-04T16:08" },
-  { id: 9, todoName: "Task m", completed: true, type: "TYPE C", deadline: "2021-09-04T16:08" },
-  { id: 10, todoName: "Task n", completed: true, type: "TYPE C", deadline: "2021-10-04T16:08" }
-];
-// enum TypeTodo {
-//   typeA = "TYPE A",
-//   typeB = "TYPE B",
-//   typeC = "TYPE C"
-// }
+var TypeTodo = new Enum({ A: "TYPE A", B: "TYPE B", C: "TYPE C" });
 
-// const todoList = [
-//   { id: 1, content: "Task a", completed: false, type: TypeTodo.typeA, deadline: "2021-01-04T16:08" },
-//   { id: 2, content: "Task b", completed: false, type: TypeTodo.typeA, deadline: "2021-02-04T16:08" },
-//   { id: 3, content: "Task c", completed: false, type: TypeTodo.typeA, deadline: "2021-03-04T16:08" },
-//   { id: 4, content: "Task d", completed: true, type: TypeTodo.typeB, deadline: "2021-04-04T16:08" },
-//   { id: 5, content: "Task e", completed: true, type: TypeTodo.typeB, deadline: "2021-05-04T16:08" },
-//   { id: 6, content: "Task f", completed: true, type: TypeTodo.typeB, deadline: "2021-06-04T16:08" },
-//   { id: 7, content: "Task g", completed: true, type: TypeTodo.typeC, deadline: "2021-07-04T16:08" },
-//   { id: 8, content: "Task h", completed: true, type: TypeTodo.typeC, deadline: "2021-08-04T16:08" },
-//   { id: 9, content: "Task m", completed: true, type: TypeTodo.typeC, deadline: "2021-09-04T16:08" },
-//   { id: 10, content: "Task n", completed: true, type: TypeTodo.typeC, deadline: "2021-10-04T16:08" }
-// ];
+const listTypeTodo = [
+  { key: "A", value: TypeTodo.A.value },
+  { key: "B", value: TypeTodo.B.value },
+  { key: "C", value: TypeTodo.C.value }
+];
+
+const todoList = [
+  { id: 1, todoName: "Task a", completed: false, type: TypeTodo.A.value, deadline: "2021-01-04T16:08" },
+  { id: 2, todoName: "Task b", completed: false, type: TypeTodo.A.value, deadline: "2021-01-04T16:08" },
+  { id: 3, todoName: "Task c", completed: false, type: TypeTodo.A.value, deadline: "2021-03-04T16:08" },
+  { id: 4, todoName: "Task d", completed: true, type: TypeTodo.B.value, deadline: "2021-04-04T16:08" },
+  { id: 5, todoName: "Task e", completed: true, type: TypeTodo.B.value, deadline: "2021-05-04T16:08" },
+  { id: 6, todoName: "Task f", completed: true, type: TypeTodo.B.value, deadline: "2021-06-04T16:08" },
+  { id: 7, todoName: "Task g", completed: true, type: TypeTodo.C.value, deadline: "2021-07-04T16:08" },
+  { id: 8, todoName: "Task h", completed: true, type: TypeTodo.C.value, deadline: "2021-08-04T16:08" },
+  { id: 9, todoName: "Task m", completed: true, type: TypeTodo.C.value, deadline: "2021-09-04T16:08" },
+  { id: 10, todoName: "Task n", completed: true, type: TypeTodo.C.value, deadline: "2021-10-04T16:08" }
+];
 
 app.use(async (req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -89,6 +79,13 @@ app.get('/getUsers', function (request, response) {
   })
 });
 
+app.get('/getListTypeTodo', function (request, response) {
+  return response.status(200).send({
+    status: "success",
+    data: listTypeTodo
+  })
+});
+
 app.get('/todoList', function (request, response) {
   return response.status(200).send({
     status: "success",
@@ -97,7 +94,10 @@ app.get('/todoList', function (request, response) {
 });
 
 app.post('/todoList', function (request, response) {
+  const keyTypeTodo = request.body.type;
   const todoNew = Object.assign({ id: todoList[todoList.length - 1].id + 1, completed: false }, request.body);
+  todoNew["type"] = TypeTodo[keyTypeTodo].value;
+  console.log(todoNew);
   todoList.push(todoNew);
   return response.status(200).send({
     status: "success",

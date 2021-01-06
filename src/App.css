@@ -171,22 +171,68 @@ body{
    opacity: 1;
  }
  
- 
- /* .search {
-   width: 130px;
-   box-sizing: border-box;
-   border: 2px solid #ccc;
-   border-radius: 4px;
-   font-size: 16px;
-   background-color: white;
-   background-image: url('https://www.w3schools.com/howto/searchicon.png');
-   background-position: 10px 10px; 
-   background-repeat: no-repeat;
-   padding: 12px 20px 12px 40px;
-   -webkit-transition: width 0.4s ease-in-out;
-   transition: width 0.4s ease-in-out;
+
+ /* CSS phần search-header */
+ .search-header{
+  position: absolute;
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  display: none;
+  z-index: 1000;
  }
- 
- .search:focus {
-   width: 100%;
- } */
+
+ .search{
+   display: flex;
+   margin: auto;
+ }
+
+ .fa-arrow-left{
+  margin-right: 24px;
+  margin-top: 1px;
+  cursor: pointer;
+ }
+
+ .search input{
+  width: 480px;
+  height: 30px;
+  border: 1px solid #d2d2d2;
+  border-radius: 2px 0 0 2px;
+  font-size: 16px;
+  font-weight: 400;
+ }
+
+/* bỏ viền mặc định thẻ input khi focus */
+input, 
+input:active, 
+input:focus {     
+  outline: 0;     
+  outline-style: none;     
+  outline-width: 0; 
+}
+
+ .search-button{
+  font-size:15px; 
+  color: #b5b5b5;
+  margin: auto;
+ }
+
+ .search-active{
+  margin: 14px 0px 0px 32px;
+  cursor: pointer;
+ }
+
+ .button{
+  display: flex;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  height: 30px;
+  width: 65px;
+  margin-left: -1px;
+  cursor: pointer;
+ }
+
+ .button:hover{
+   background-color: #d9d9d9;
+ }
+

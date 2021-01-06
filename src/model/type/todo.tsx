@@ -18,7 +18,8 @@ export interface PropsContentTodoList {
 
 export interface PropsHeaderTodoList {
     todoList: Todo[],
-    onDataChange: Function
+    onDataChange: Function,
+    onChangeKeySearch: Function
 }
 
 export interface PropsModalAddTodo {

@@ -7,7 +7,6 @@ import { Todo } from '../model/type/todo';
 function FooterTodoList(props: PropsFooterTodoList) {
 
     const handleChangeFilter = (status: string) => {
-        // console.log("footer", status)
         props.onChangeFilter(status);
     }
 

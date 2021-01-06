@@ -66,7 +66,6 @@ function ModalAddTodo(props: PropsModalAddTodo) {
 
     const saveAddTodo = () => {
         const todoList = props.todoList;
-        console.log("fields", fields);
         fetch('http://localhost:3001/todoList', {
             method: 'POST',
             body: JSON.stringify(fields),
@@ -76,7 +75,6 @@ function ModalAddTodo(props: PropsModalAddTodo) {
         })
             .then((response) => response.json())
             .then((result) => {
-                console.log(result);
                 todoList.push(result.data);
                 const todoListChange = todoList.slice();
                 props.onDataChange(todoListChange);
@@ -91,7 +89,6 @@ function ModalAddTodo(props: PropsModalAddTodo) {
             .then(res => res.json())
             .then(
                 (result) => {
-                    console.log("result", result.data);
                     setListType(result.data);
                 },
                 (error) => {

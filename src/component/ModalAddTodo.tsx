@@ -54,14 +54,16 @@ function ModalAddTodo(props: PropsModalAddTodo) {
         setErrors(pushErrors);
     };
 
-    const handleChangeInput = (event: any) => {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-        fields[name] = value;
+    const handleChangeInput = (event: React.SyntheticEvent) => {
+        const target = event.target as HTMLInputElement;
+        if (target) {
+            const value = target.type === 'checkbox' ? target.checked : target.value;
+            const name = target.name;
+            fields[name] = value;
 
-        setFields(fields);
-        handleValidation();
+            setFields(fields);
+            handleValidation();
+        }
     };
 
     const saveAddTodo = () => {

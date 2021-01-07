@@ -12,6 +12,19 @@ export interface TodoIsCompleted {
     isCompleted: boolean
 }
 
+export interface TodoAdd {
+    type: string,
+    todoName: string,
+    deadline: string
+}
+
+export interface ErrorFormTodo {
+    type: string,
+    todoName: string,
+    deadline: string,
+    formIsValid: boolean
+}
+
 export interface TypeTodo {
     key: string,
     value: string

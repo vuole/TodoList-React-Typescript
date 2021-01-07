@@ -3,13 +3,13 @@ import React, { useState, useEffect } from 'react';
 // import { Button, Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { PropsModalAddTodo, Todo, TypeTodo } from '../model/type/todo';
+import { PropsModalAddTodo, Todo, TypeTodo, TodoAdd, ErrorFormTodo } from '../model/type/todo';
 import { postTodo, getListTypeTodo } from '../service/todo-service'
 
 function ModalAddTodo(props: PropsModalAddTodo) {
     const [show, setShow] = useState(false);
-    const [fields, setFields] = useState<any>({});
-    const [errors, setErrors] = useState<any>({});
+    const [fields, setFields] = useState<TodoAdd>({} as TodoAdd);
+    const [errors, setErrors] = useState<ErrorFormTodo>({} as ErrorFormTodo);
     const [listTypeTodo, setListType] = useState<TypeTodo[]>([]);
     const rows: JSX.Element[] = [];
 
@@ -20,13 +20,13 @@ function ModalAddTodo(props: PropsModalAddTodo) {
     const handleClose = () => setShow(false);
 
     const handleShow = () => {
-        setFields({});
-        setErrors({});
+        setFields({} as TodoAdd);
+        setErrors({} as ErrorFormTodo);
         setShow(true);
     };
 
     const handleValidation = () => {
-        let pushErrors: any = {};
+        let pushErrors: ErrorFormTodo = {} as ErrorFormTodo;
         let formIsValid = true;
 
         if (fields["todoName"] == undefined) {
@@ -62,9 +62,16 @@ function ModalAddTodo(props: PropsModalAddTodo) {
         const target = event.target as HTMLInputElement;
         if (target) {
             const value = target.type === 'checkbox' ? target.checked : target.value;
-            const name = target.name;
-            fields[name] = value;
+            const name: string = target.name;
+            // fields[name] = value;
 
+            if (name === "todoName") {
+                fields["todoName"] = value as string;
+            } else if (name === "type") {
+                fields["type"] = value as string;
+            } else if (name === "deadline") {
+                fields["deadline"] = value as string;
+            }
             setFields(fields);
             handleValidation();
         }

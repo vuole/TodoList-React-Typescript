@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Todo, TodoIsCompleted } from '../model/type/todo';
+import { Todo, TodoIsCompleted, TodoAdd } from '../model/type/todo';
 
 const baseURL = 'http://localhost:3001/';
 
@@ -13,7 +13,7 @@ export const getTodoList = async () => {
     return result.data;
 };
 
-export const postTodo = async (todo: Todo) => {
+export const postTodo = async (todo: TodoAdd) => {
     let result = await axios.post(baseURL + 'todoList', todo);
     return result.data;
 }

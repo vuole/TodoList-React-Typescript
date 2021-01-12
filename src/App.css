@@ -27,6 +27,13 @@ body{
  li:hover{
    background-color: #dae9f7;
  }
+ .fa-trash-alt{
+  color: red;
+  margin: 13px 13px;
+  cursor: pointer;
+  font-size: 22px;
+  display: none;
+}
  li:hover .fa-trash-alt{
    display: inline;
  }
@@ -34,6 +41,11 @@ body{
   width: 46px;
   height: 36px;
   margin-top: 3px;
+ }
+ .fa-calendar-times{
+  color: orange;
+  margin: 11.5px 13px;
+  cursor: default;
  }
  .footer{
    display: flex;
@@ -107,13 +119,6 @@ body{
  }
  .delete{
    display: flex;
- }
- .fa-trash-alt{
-   color: red;
-   margin: 13px 13px;
-   cursor: pointer;
-   font-size: 22px;
-   display: none;
  }
  .row{
    margin: 0;

@@ -97,7 +97,7 @@ app.post('/todoList', function (request, response) {
   const keyTypeTodo = request.body.type;
   const todoNew = Object.assign({ id: todoList[todoList.length - 1].id + 1, isCompleted: false }, request.body);
   todoNew["type"] = TypeTodo[keyTypeTodo].value;
-  console.log(todoNew);
+  // console.log(todoNew);
   todoList.push(todoNew);
   return response.status(200).send({
     status: "success",

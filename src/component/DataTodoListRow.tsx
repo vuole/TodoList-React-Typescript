@@ -15,7 +15,7 @@ function DataTodoListRow(props: PropsDataTodoListRow) {
 
     useEffect(() => {
         let loopCheck = setInterval(() => {
-            const periodUpdate = Math.floor((Date.parse(props.todo.deadline) - (new Date()).getTime()) / 60000); //update khoảng sát deadline
+            const periodUpdate = Math.floor((Date.parse(props.todo.deadline) - (new Date()).getTime()) / 60000); //update khoảng time sát deadline
             setMinutesCompare(periodUpdate);
         }, 1000);
         return () => {
@@ -36,7 +36,10 @@ function DataTodoListRow(props: PropsDataTodoListRow) {
         });
     };
 
-    const todoName = todo.todoName;
+    const days = Math.floor(minutesCompare / 1440);
+    const timeRemaining = days + ' day(s), ' +
+        Math.floor((minutesCompare - (days * 1440)) / 60) + ' hour(s), ' +
+        Math.round(minutesCompare % 60) + ' minute(s)'
     // console.log("minutesCompare", minutesCompare);
 
     return (
@@ -46,13 +49,18 @@ function DataTodoListRow(props: PropsDataTodoListRow) {
                     <Modal.Title>Todo Detail</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <p>{todo.id}</p>
                     <label>Todo Name: </label>
                     <p>{todo.todoName}</p>
                     <label>Type: </label>
                     <p>{todo.type}</p>
                     <label>Deadline: </label>
                     <p>
-                        {moment(todo.deadline).format('DD/MM/YYYY, hh:mm a')}
+                        {moment(todo.deadline).format('DD/MM/YYYY hh:mm A')}
+                    </p>
+                    <label>Time remaining: </label>
+                    <p>
+                        {minutesCompare > 0 ? timeRemaining : "Time Out"}
                     </p>
                     <label>Status: </label>
                     <p>{todo.isCompleted === true ? "Completed" : "Active"}</p>
@@ -66,12 +74,11 @@ function DataTodoListRow(props: PropsDataTodoListRow) {
             <li className="row">
                 <div className="col-2">
                     <div className="round">
-                        <input type="checkbox" id={todoName} name="todoName" checked={props.todo.isCompleted} onChange={handleCompletedChange} />
-                        <label htmlFor={todoName}></label>
+                        <input type="checkbox" id={todo.id.toString()} name="todoName" checked={todo.isCompleted} onChange={handleCompletedChange} />
+                        <label htmlFor={todo.id.toString()}></label>
                     </div>
                 </div>
-                {props.todo.isCompleted ? <div className="col-8 completed" onClick={handleShow}><span>{todoName}</span></div>
-                    : <div className="col-8" onClick={handleShow}><span>{todoName}</span></div>}
+                <div className={props.todo.isCompleted ? "col-8 completed" : "col-8"} onClick={handleShow}><span>{todo.todoName}</span></div>
                 <AlertDialog todo={props.todo} minutesCompare={minutesCompare} onChangeRefresh={props.onChangeRefresh} />
             </li>
         </>

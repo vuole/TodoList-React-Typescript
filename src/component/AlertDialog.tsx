@@ -30,8 +30,10 @@ export default function AlertDialog(props: PropsAlertDialog) {
     return (
         <div>
             <div className="col-2 delete">
-                {props.minutesCompare <= 15 ? <img src="../../Alarm_Clock.gif" className="alert-deadline" /> : ""}
-                <i className='fas fa-trash-alt' onClick={handleClickOpen}></i>
+                {props.minutesCompare <= 0 ? <i className='far fa-calendar-times' data-toggle="tooltip" title="Time Out"></i> : ""}
+                {props.minutesCompare <= 15 && props.minutesCompare > 0 ?
+                    <img src="../../Alarm_Clock.gif" className="alert-deadline" data-toggle="tooltip" title={props.minutesCompare + ' minutes left before the deadline'} /> : ""}
+                <i className='fas fa-trash-alt' data-toggle="tooltip" title="Delete" onClick={handleClickOpen}></i>
             </div>
             <Dialog
                 open={open}

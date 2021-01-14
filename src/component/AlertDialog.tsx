@@ -7,7 +7,13 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { PropsAlertDialog } from '../model/type/todo';
 import { Todo } from '../model/type/todo';
-import { delTodo } from "../service/todo-service"
+import { gql, useMutation } from '@apollo/client';
+
+const DELETE_TODO = gql`
+    mutation DeleteTodo($id: ID!) {
+        deleteTodo(id: $id)
+    }
+`;
 
 export default function AlertDialog(props: PropsAlertDialog) {
     const [open, setOpen] = React.useState(false);
@@ -20,11 +26,11 @@ export default function AlertDialog(props: PropsAlertDialog) {
         setOpen(false);
     };
 
-    const deleteTodo = () => {
-        const todo: Todo = props.todo;
-        delTodo(todo.id).then(res => {
-            props.onChangeRefresh();
-        });
+    const [deleteTodo, { loading, error }] = useMutation(DELETE_TODO);
+
+    const handleDeleteTodo = () => {
+        deleteTodo({ variables: { id: props.todo.id } });
+        props.onChangeRefresh();
     };
 
     return (
@@ -46,7 +52,7 @@ export default function AlertDialog(props: PropsAlertDialog) {
                     <Button onClick={handleClose} color="primary">
                         Disagree
                     </Button>
-                    <Button onClick={() => { handleClose(); deleteTodo(); }} color="primary" autoFocus>
+                    <Button onClick={() => { handleClose(); handleDeleteTodo(); }} color="primary" autoFocus>
                         Agree
                     </Button>
                 </DialogActions>

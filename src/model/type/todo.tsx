@@ -9,6 +9,7 @@ export interface Todo {
 }
 
 export interface TodoIsCompleted {
+    id: number,
     isCompleted: boolean
 }
 

@@ -108,10 +108,16 @@ app.post('/todoList', function (request, response) {
 app.delete('/todoList/:id*?', function (request, response) {
   const id = request.query.id;
   const index = todoList.findIndex(e => e.id == id);
-  todoList.splice(index, 1);
-  return response.status(200).send({
-    status: "success"
-  })
+  if (index < 0) {
+    return response.status(200).send({
+      status: "Todo not exist"
+    })
+  } else {
+    todoList.splice(index, 1);
+    return response.status(200).send({
+      status: "success"
+    })
+  }
 });
 
 app.put('/todoList/:id*?', function (request, response) {

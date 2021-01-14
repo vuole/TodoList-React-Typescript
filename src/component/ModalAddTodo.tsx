@@ -4,7 +4,22 @@ import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { PropsModalAddTodo, Todo, TypeTodo, TodoAdd, ErrorFormTodo } from '../model/type/todo';
-import { postTodo, getListTypeTodo } from '../service/todo-service'
+import { gql, useMutation, useQuery } from '@apollo/client';
+
+const ADD_TODO = gql`
+    mutation AddTodo($todo: TodoInput) {
+        addTodo(todo: $todo)
+    }
+`;
+
+const GET_LIST_TYPE_TODO = gql`
+    query GetListTypeTodo{
+        getListTypeTodo {
+        key
+        value  
+        }
+    }
+`;
 
 function ModalAddTodo(props: PropsModalAddTodo) {
     const [show, setShow] = useState(false);
@@ -13,9 +28,11 @@ function ModalAddTodo(props: PropsModalAddTodo) {
     const [listTypeTodo, setListType] = useState<TypeTodo[]>([]);
     const rows: JSX.Element[] = [];
 
+    const { data } = useQuery(GET_LIST_TYPE_TODO);
+
     useEffect(() => {
-        getListTypeTodo().then(res => setListType(res.data))
-    }, []);
+        setListType(data ? data.getListTypeTodo : [])
+    });
 
     const handleClose = () => setShow(false);
 
@@ -77,10 +94,11 @@ function ModalAddTodo(props: PropsModalAddTodo) {
         }
     };
 
+    const [newTodo, { loading, error }] = useMutation(ADD_TODO);
+
     const saveAddTodo = () => {
-        postTodo(fields).then(res => {
-            props.onChangeRefresh();
-        });
+        newTodo({ variables: { todo: fields } });
+        props.onChangeRefresh();
     }
 
     return (
@@ -124,7 +142,8 @@ function ModalAddTodo(props: PropsModalAddTodo) {
                     <Button variant="secondary" onClick={handleClose}>
                         Cancel
             </Button>
-                    <Button variant="primary" disabled={(errors["formIsValid"] || false) === false ? true : false} onClick={() => { handleClose(); saveAddTodo(); }}>
+                    <Button variant="primary" disabled={(errors["formIsValid"] || false) === false ? true : false}
+                        onClick={() => { handleClose(); saveAddTodo(); }}>
                         Save
             </Button>
                 </Modal.Footer>

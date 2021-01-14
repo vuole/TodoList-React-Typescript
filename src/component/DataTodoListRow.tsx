@@ -6,7 +6,13 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import moment from 'moment';
 import 'moment-timezone';
-import { putIsCompletedTodo } from '../service/todo-service';
+import { gql, useMutation } from '@apollo/client';
+
+const EDIT_STATUS_TODO = gql`
+    mutation EditStatusTodo($todo: TodoUpdateInput) {
+        editStatusTodo(todo: $todo)
+    }
+`;
 
 function DataTodoListRow(props: PropsDataTodoListRow) {
     const period = Math.floor((Date.parse(props.todo.deadline) - (new Date()).getTime()) / 60000); //khởi tạo khoảng thời gian sát deadline
@@ -28,12 +34,13 @@ function DataTodoListRow(props: PropsDataTodoListRow) {
 
     const todo: Todo = props.todo;
 
-    const handleCompletedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const status = e.target.checked;
-        const body: TodoIsCompleted = { isCompleted: status };
-        putIsCompletedTodo(todo.id, body).then(res => {
-            props.onChangeRefresh();
+    const [isCompletedChange, { loading, error }] = useMutation(EDIT_STATUS_TODO);
+
+    const handleIsCompletedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        isCompletedChange({
+            variables: { todo: { id: todo.id, isCompleted: e.target.checked } }
         });
+        props.onChangeRefresh();
     };
 
     const days = Math.floor(minutesCompare / 1440);
@@ -49,7 +56,6 @@ function DataTodoListRow(props: PropsDataTodoListRow) {
                     <Modal.Title>Todo Detail</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>{todo.id}</p>
                     <label>Todo Name: </label>
                     <p>{todo.todoName}</p>
                     <label>Type: </label>
@@ -74,7 +80,8 @@ function DataTodoListRow(props: PropsDataTodoListRow) {
             <li className="row">
                 <div className="col-2">
                     <div className="round">
-                        <input type="checkbox" id={todo.id.toString()} name="todoName" checked={todo.isCompleted} onChange={handleCompletedChange} />
+                        <input type="checkbox" id={todo.id.toString()} name="todoName" checked={todo.isCompleted}
+                            onChange={handleIsCompletedChange} />
                         <label htmlFor={todo.id.toString()}></label>
                     </div>
                 </div>

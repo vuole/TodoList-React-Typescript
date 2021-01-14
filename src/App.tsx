@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import HeaderTodoList from './component/HeaderTodoList';
 import ContentTodoList from './component/ContentTodoList';
 import { Todo } from './model/type/todo';
-import { getTodoList } from './service/todo-service'
+import { gql, useQuery } from '@apollo/client';
 
 function dataFilter(todoList: Todo[], filter: string, keySearch: string): Todo[] {
   if (filter === "all") {
@@ -17,28 +17,42 @@ function dataFilter(todoList: Todo[], filter: string, keySearch: string): Todo[]
   return [];
 }
 
+const GET_TODO_LIST = gql`
+  query{
+    getTodoList {
+      id
+      todoName
+      isCompleted
+      type
+      deadline
+    }
+  }
+`;
+
 function App() {
   const [todoList, setTodoList] = useState<Todo[]>([]);
   const [filter, setFilter] = useState<string>("all");
   const [keySearch, setKeySearch] = useState<string>("");
-  const [refresh, setRefresh] = useState<boolean>(false);
 
   const handleChangeFilter = (status: string) => setFilter(status);
 
   const handleChangeKeySearch = (key: string) => setKeySearch(key);
 
-  const handleChangeRefresh = () => setRefresh(!refresh);
+  const refreshTodoList = () => refetch();
+
+  const { data, refetch } = useQuery(GET_TODO_LIST, { fetchPolicy: "network-only" });
+  // console.log(data ? data.getTodoList : 'no data');
 
   useEffect(() => {
-    getTodoList().then(res => setTodoList(res.data));
-  }, [refresh]);
+    setTodoList(data ? data.getTodoList : []);
+  });
 
   return (
     <div className="package">
       <div className="todo-page">
-        <HeaderTodoList onChangeKeySearch={handleChangeKeySearch} onChangeRefresh={handleChangeRefresh} />
+        <HeaderTodoList onChangeKeySearch={handleChangeKeySearch} onChangeRefresh={refreshTodoList} />
         <ContentTodoList todoListFilter={dataFilter(todoList, filter, keySearch)} filter={filter}
-          onChangeFilter={handleChangeFilter} onChangeRefresh={handleChangeRefresh} />
+          onChangeFilter={handleChangeFilter} onChangeRefresh={refreshTodoList} />
       </div>
     </div>
   );
